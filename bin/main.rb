@@ -5,7 +5,7 @@ require_relative '../lib/scraper.rb'
 
 s1 = Scraper.new
 
-arr = ['','-------------','']
+arr = ['', '-------------', '']
 
 puts s1.table_creation('Salary Estimate', 1)
 puts arr
