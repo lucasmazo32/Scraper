@@ -60,10 +60,7 @@ class Scraper
 
   # Gives you the Nokogiri document for further use (5 first). It require the number of the city you want to analize
   def doc_of_job(city_number)
-    arr = []
-    (0...5).each do |i|
-      arr[i] = webpage(job_link(first(loc_link(city_number))[1][i]).to_s).xpath("//div[@id='jobDescriptionText']")
-    end
+    arr = first(loc_link(city_number))[1].to_a.map{ |x| webpage(job_link(x.to_s)).xpath("//div[@id='jobDescriptionText']") }
     arr
   end
 
@@ -83,3 +80,7 @@ class Scraper
     first
   end
 end
+
+s1 = Scraper.new
+
+puts s1.doc_of_job(1)[1]
