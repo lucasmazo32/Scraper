@@ -60,7 +60,8 @@ class Scraper
 
   # Gives you the Nokogiri document for further use (5 first). It require the number of the city you want to analize
   def doc_of_job(city_number)
-    arr = first(loc_link(city_number))[1].to_a.map{ |x| webpage(job_link(x.to_s)).xpath("//div[@id='jobDescriptionText']") }
+    arr = first(loc_link(city_number))[1].to_a.map{ |x| webpage(job_link(x.to_s)).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
+    arr = arr.map{ |x| x.map { |y| y.to_s } }
     arr
   end
 
@@ -76,11 +77,9 @@ class Scraper
   end
 
   # Gives you the years of experience required for the job
-  def yoe
-    first
+  def yoe(city_number)
+    arr = doc_of_job(city_number).map{ |x| x.select{ |x| x if x.include?('years') } }
+    arr = arr.map{ |x| x.map{ |y| y } }
+    arr
   end
 end
-
-s1 = Scraper.new
-
-puts s1.doc_of_job(1)[1]
