@@ -28,7 +28,12 @@ class Scraper
     (0...text.length / 2).each do |i|
       table[i +1] = "#{text[i * 2]} #{text[i * 2 + 1]}"
     end
-    table
+    if table.length == 1
+      table[1] = "Could not load the information"
+      table
+    else
+        table
+    end
   end
 
   # It gives the array needed with two parameters, n, 1 for Salary, 2 for Job type and 3 for Location and the Link of the page
