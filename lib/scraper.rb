@@ -72,13 +72,6 @@ class Scraper
     @in_job_url + href
   end
 
-  # Gives you the Nokogiri document for further use (5 first). It require the number of the city you want to analize
-  def doc_of_job(city_number)
-    arr = first(loc_link(city_number))[1].to_a.map{ |x| webpage(job_link(x.to_s)).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
-    arr = arr.map{ |x| x.map { |y| y.to_s } }
-    arr
-  end
-
   # Gives you the array of the name of 3 most important cities
   def city
     if loc_link.length == 3
@@ -91,21 +84,31 @@ class Scraper
     arr
   end
 
-  # Gives you the name of the first 10 jobs and refs in a 2d array, you need the number of the city
+  # Gives you the Nokogiri document for further use (5 first). It require the number of the city you want to analize
+  def doc_of_job(city_number)
+    arr = first(loc_link[city_number]).map{ |x| webpage(job_link(x.to_s)).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
+    arr = arr.map{ |x| x.map { |y| y.to_s } }
+    arr
+  end
+
+  # Gives you the links of the first 10you need the number of the city
   def first(city_num)
     result = []
-    result = [webpage(loc_link(city_num)).xpath("//div[@class='title']//a//attribute::title"), webpage(loc_link(city_num)).xpath("//div[@class='title']//a//attribute::href")]
+    result = webpage(loc_link[city_num.to_i]).xpath("//div[@class='title']//a//attribute::href").to_a
   end
 
   # Gives you the years of experience required for the job
   def yoe(city_number)
-    arr = doc_of_job(city_number).map{ |x| x.select{ |x| x if x.include?('years') } }
-    arr = arr.map{ |x| x.map{ |y| y } }
+    arr = []
+    arr[0] = webpage(loc_link[city_number]).xpath("//div[@class='title']//a//attribute::title")
+    arr[1] = doc_of_job(city_number).map{ |x| x.select{ |x| x if x.include?('years') } }
+    arr[1] = arr[1].map{ |x| x.empty? ? 'No information given' : x }
     arr
   end
 end
 
-#s1 = Scraper.new
-#
-#arr = s1.city
+s1 = Scraper.new
 
+arr = s1.yoe(0)
+
+puts arr

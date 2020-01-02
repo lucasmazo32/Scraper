@@ -41,12 +41,15 @@ city = s1.city          # Cities Name
 salary_main = s1.table_creation('Salary Estimate', 1, s1.page_url) # Table of the main page
 job_main = s1.table_creation('Job Type', 2, s1.page_url)           # Table of the main page
 loc_main = s1.table_creation('Location', nil, s1.page_url)           # Table of the main page
-salary_city2 = s1.table_creation('Salary Estimate',1,city_link[1])
-salary_city1 = s1.table_creation('Salary Estimate',1,city_link[0])
-salary_city3 = s1.table_creation('Salary Estimate',1,city_link[2])
-job_city1 = s1.table_creation('Job Type',2,city_link[0])
-job_city2 = s1.table_creation('Job Type',2,city_link[1])
-job_city3 = s1.table_creation('Job Type',2,city_link[2])
+salary_city2 = s1.table_creation('Salary Estimate',1,city_link[1])  #Table for cities
+salary_city1 = s1.table_creation('Salary Estimate',1,city_link[0])  #Table for cities
+salary_city3 = s1.table_creation('Salary Estimate',1,city_link[2])  #Table for cities
+job_city1 = s1.table_creation('Job Type',2,city_link[0])  #Table for cities
+job_city2 = s1.table_creation('Job Type',2,city_link[1])  #Table for cities
+job_city3 = s1.table_creation('Job Type',2,city_link[2])  #Table for cities
+#yoe1 = s1.yoe(0)
+#yoe2 = s1.yoe(1)
+#yoe3 = s1.yoe(2)
 
 
 File.delete("test.html")
