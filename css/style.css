@@ -3,14 +3,19 @@ body {
     width: 100%;
     margin: 0 auto;
     font-family: Helvetica, Arial, sans-serif;
+    background-color: lightgray;
 }
 
 .title {
     justify-content: center;
+    padding: 20px;
+    font-size: 1.4em;
+    font-weight: bold;
 }
 
 body h1 {
     padding: 30px;
+    padding-bottom: 10px;
     font-size: 30px;
     font-weight: bold;
 }

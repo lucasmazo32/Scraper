@@ -20,6 +20,15 @@ class Scraper
     new_page = Nokogiri::HTML(open(url))
   end
 
+  #Gives the name of the search
+  def search_title
+    arr = []
+    arr[0] = @doc.xpath("//span[@id='what_container']//input//attribute::value").to_s.capitalize()
+    arr[1] = ' jobs at '
+    arr[2] = @doc.xpath("//span[@id='where_container']//input//attribute::value").to_s.capitalize()
+    arr.join()
+  end
+
   # Creates a table with the given array. It gives it a #name, it requires a parameter, give 1 to Salary Estimate,
   # 2 for Job Type and else for location, and the link for the webpage you want to create it from.
   def table_creation(name, par = nil, link)
@@ -53,8 +62,9 @@ class Scraper
   end
 
   # It converts gives you the link of location with a given number (0...5), you need to pick just one
-  def loc_link(num)
-    @in_job_url + get_ext[num.to_i].to_s
+  def loc_link
+    arr =  get_ext.map { |x| @in_job_url + x.to_s }
+    arr = arr[0...3]
   end
 
   # It gives you the link of the job. You will need the extention as a parameter "href"
@@ -70,8 +80,8 @@ class Scraper
   end
 
   # This gets the name of the city with the city link. To make it work you need the city number
-  def city(city_number)
-    webpage(loc_link(city_number)).xpath("//span[@class='item']//b//text()")
+  def city
+      arr = loc_link.map { |x| webpage(x).xpath("//span[@class='item']//b//text()") }
   end
 
   # Gives you the name of the first 10 jobs and refs in a 2d array, you need the number of the city
@@ -87,3 +97,7 @@ class Scraper
     arr
   end
 end
+
+#s1 = Scraper.new
+
+#puts s1.city
