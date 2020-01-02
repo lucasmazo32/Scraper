@@ -13,7 +13,7 @@ puts s1.table_creation('Job Type', 2, s1.page_url)
 puts arr
 puts s1.table_creation('Location', nil, s1.page_url)
 =end
-
+=begin
 (0...3).each do |i|
   puts s1.city(s1.loc_link(i))
   puts ''
@@ -22,3 +22,4 @@ puts s1.table_creation('Location', nil, s1.page_url)
   puts s1.table_creation('Job Type', 2, s1.loc_link(i))
   puts ['', '******************', '']
 end
+=end

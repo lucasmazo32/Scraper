@@ -26,8 +26,7 @@ class Scraper
     table = [name]
     text = table_text(par, link)
     (0...text.length / 2).each do |i|
-      table[i * 2 + 1] = '----------------'
-      table[i * 2 + 2] = "#{text[i * 2]} #{text[i * 2 + 1]}"
+      table[i +1] = "#{text[i * 2]} #{text[i * 2 + 1]}"
     end
     table
   end
