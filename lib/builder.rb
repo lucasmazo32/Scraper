@@ -9,15 +9,20 @@ class Builder
         @doc = Nokogiri::HTML(File.open("index.html"))
     end
 
-    def lis(cont, class_name)
+    def hyper(url, class_name)
+        hyper_a = @doc.at_css "div[@class='row title #{class_name}']//a"
+        hyper_a['href'] = url
+    end
+
+    def lis(cont,col,class_container ,class_name)
         for i in 0...6 do
-            li = @doc.at_css "div[@class='#{class_name} col-4 d-flex justify-content-center']//ul//li#{[i+1]}"
+            li = @doc.at_css "div[@class='row #{class_container}']//div[@class='#{class_name} col-#{col} d-flex justify-content-center']//ul//li#{[i+1]}"
             li.content = cont[i]
         end
     end
 
     def title(cont, class_name)
-        div = @doc.at_css "div[@class='row title #{class_name}']"
+        div = @doc.at_css "div[@class='row title #{class_name}']//a"
         div.content = cont
     end
 
@@ -29,15 +34,40 @@ end
 b1 = Builder.new
 s1 = Scraper.new
 
+search_title = s1.search_title # Title of the page
+main_url = s1.page_url  # Page url
+city_link = s1.loc_link # Cities URL's
+city = s1.city          # Cities Name
+salary_main = s1.table_creation('Salary Estimate', 1, s1.page_url) # Table of the main page
+job_main = s1.table_creation('Job Type', 2, s1.page_url)           # Table of the main page
+loc_main = s1.table_creation('Location', nil, s1.page_url)           # Table of the main page
+salary_city2 = s1.table_creation('Salary Estimate',1,city_link[1])
+salary_city1 = s1.table_creation('Salary Estimate',1,city_link[0])
+salary_city3 = s1.table_creation('Salary Estimate',1,city_link[2])
+job_city1 = s1.table_creation('Job Type',2,city_link[0])
+job_city2 = s1.table_creation('Job Type',2,city_link[1])
+job_city3 = s1.table_creation('Job Type',2,city_link[2])
+
+
 File.delete("test.html")
 file = File.new("test.html",'w')
-b1.title(s1.search_title, 'search-title')
-b1.title(s1.city(0), 'city1-title')
-b1.title(s1.city(1), 'city2-title')
-b1.title(s1.city(2), 'city3-title')
-b1.lis(s1.table_creation('Salary Estimate', 1, s1.page_url),'sal')
-b1.lis(s1.table_creation('Job Type', 2, s1.page_url),'job')
-b1.lis(s1.table_creation('City', nil, s1.page_url),'loc')
+b1.hyper(main_url, 'search-title')
+b1.hyper(city_link[0], 'city1-title')
+b1.hyper(city_link[2], 'city2-title')
+b1.hyper(city_link[1], 'city3-title')
+b1.title(search_title, 'search-title')
+b1.title(city[0], 'city1-title')
+b1.title(city[1], 'city2-title')
+b1.title(city[2], 'city3-title')
+b1.lis(salary_main,4,'main','sal')
+b1.lis(job_main,4,'main','job')
+b1.lis(loc_main,4,'main','loc')
+b1.lis(salary_city1,3,'city1','sal')
+b1.lis(salary_city2,3,'city2','sal')
+b1.lis(salary_city3,3,'city3','sal')
+b1.lis(job_city1,3,'city1','job')
+b1.lis(job_city2,3,'city2','job')
+b1.lis(job_city3,3,'city3','job')
 file.write(b1.to_html)
 file.close
 

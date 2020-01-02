@@ -61,7 +61,7 @@ class Scraper
     @doc.xpath("//div[@id='rb_Location']//li//a//attribute::href")
   end
 
-  # It converts gives you the link of location with a given number (0...5), you need to pick just one
+  # Gives you the array of the link of the 3 most important cities
   def loc_link
     arr =  get_ext.map { |x| @in_job_url + x.to_s }
     arr = arr[0...3]
@@ -79,9 +79,16 @@ class Scraper
     arr
   end
 
-  # This gets the name of the city with the city link. To make it work you need the city number
+  # Gives you the array of the name of 3 most important cities
   def city
+    if loc_link.length == 3
       arr = loc_link.map { |x| webpage(x).xpath("//span[@class='item']//b//text()") }
+      arr = arr.map { |x| x.empty? ? "Could not load the information" : x }
+    else
+      arr = Array.new
+      3.times { arr << "Could not load the information"}
+    end
+    arr
   end
 
   # Gives you the name of the first 10 jobs and refs in a 2d array, you need the number of the city
@@ -99,5 +106,6 @@ class Scraper
 end
 
 #s1 = Scraper.new
+#
+#arr = s1.city
 
-#puts s1.city
