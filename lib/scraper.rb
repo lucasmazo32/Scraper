@@ -84,9 +84,9 @@ class Scraper
     arr
   end
 
-  # Gives you the Nokogiri document for further use (5 first). It require the number of the city you want to analize
+  # Gives you the the text inside the Unorder list. It require the number of the city you want to analize
   def doc_of_job(city_number)
-    arr = first(loc_link[city_number]).map{ |x| webpage(job_link(x.to_s)).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
+    arr = first(loc_link[city_number]).map{ |x| webpage(x).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
     arr = arr.map{ |x| x.map { |y| y.to_s } }
     arr
   end
@@ -95,9 +95,10 @@ class Scraper
   def first(city_num)
     result = []
     result = webpage(loc_link[city_num.to_i]).xpath("//div[@class='title']//a//attribute::href").to_a
+    result = result.map { |x| job_link(x.to_s) }
   end
 
-  # Gives you the years of experience required for the job
+  # Gives you the name of the job and years of experience required for the job in a 2d array
   def yoe(city_number)
     arr = []
     arr[0] = webpage(loc_link[city_number]).xpath("//div[@class='title']//a//attribute::title")
@@ -107,8 +108,8 @@ class Scraper
   end
 end
 
-s1 = Scraper.new
-
-arr = s1.yoe(0)
-
-puts arr
+#s1 = Scraper.new
+#
+#arr = s1.doc_of_job(0)
+#
+#puts arr[1]
