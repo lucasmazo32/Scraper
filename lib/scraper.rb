@@ -117,11 +117,3 @@ class Scraper
     arr
   end
 end
-
-s1 = Scraper.new
-
-arr = []
-arr = s1.doc_of_job(0)
-
-puts s1.first(0)
-puts arr[1]
