@@ -9,8 +9,8 @@ class Scraper
   attr_reader :doc
 
   # Initial values
-  def initialize
-    @page_url = 'https://www.indeed.com/q-back-end-developer-l-United-States-jobs.html'
+  def initialize(page_url = 'https://www.indeed.com/q-back-end-developer-l-United-States-jobs.html')
+    @page_url = page_url
     @in_job_url = 'https://www.indeed.com'
     @doc = Nokogiri::HTML(open(@page_url))
   end
@@ -48,23 +48,32 @@ class Scraper
   # It gives the array needed with two parameters, n, 1 for Salary, 2 for Job type and 3 for Location and the Link of the page
   def table_text(n = nil, link)
     if n == 1
-      webpage(link).xpath("//div[@id='rb_Salary Estimate']//li//span[@class]/text()")
+      arr = webpage(link).css("//div[@id='rb_Salary Estimate']//li//span[@class]/text()")
+        while arr.empty?
+            arr = webpage(link).css("//div[@id='rb_Salary Estimate']//li//span[@class]/text()")
+        end
     elsif n == 2
-      webpage(link).xpath("//div[@id='rb_Job Type']//li//span[@class]/text()")
+      arr = webpage(link).xpath("//div[@id='rb_Job Type']//li//span[@class]/text()")
+      while arr.empty?
+        arr = webpage(link).css("//div[@id='rb_Job Type']//li//span[@class]/text()")
+      end
     else
-      webpage(link).xpath("//div[@id='rb_Location']//li//span[@class]/text()")
+      arr = webpage(link).xpath("//div[@id='rb_Location']//li//span[@class]/text()")
+      while arr.empty?
+        arr = webpage(link).css("//div[@id='rb_Location']//li//span[@class]/text()")
+      end
     end
+    arr
   end
 
   # It gets the array of all hrefs (/job...) of all the cities. This method is private
-  def get_ext
-    @doc.xpath("//div[@id='rb_Location']//li//a//attribute::href")
-  end
-
-  # Gives you the array of the link of the 3 most important cities
   def loc_link
-    arr =  get_ext.map { |x| @in_job_url + x.to_s }
-    arr = arr[0...3]
+    arr = @doc.xpath("//div[@id='rb_Location']//li//a//attribute::href")
+    while arr.empty?
+      arr = webpage(@page_url).xpath("//div[@id='rb_Location']//li//a//attribute::href")
+    end
+    arr.to_a
+    arr[0...3].map { |x| @in_job_url + x.to_s }
   end
 
   # It gives you the link of the job. You will need the extention as a parameter "href"
@@ -74,27 +83,27 @@ class Scraper
 
   # Gives you the array of the name of 3 most important cities
   def city
-    if loc_link.length == 3
-      arr = loc_link.map { |x| webpage(x).xpath("//span[@class='item']//b//text()") }
-      arr = arr.map { |x| x.empty? ? "Could not load the information" : x }
-    else
-      arr = Array.new
-      3.times { arr << "Could not load the information"}
+    loc_link.map do |x| 
+      arr = webpage(x).xpath("//span[@class='item']//b//text()")
+      while arr.empty?
+        arr = webpage(x).xpath("//span[@class='item']//b//text()")
+      end
+      arr
     end
-    arr
   end
 
   # Gives you the the text inside the Unorder list. It require the number of the city you want to analize
   def doc_of_job(city_number)
-    arr = first(loc_link[city_number]).map{ |x| webpage(x).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
+    arr = first(city_number).map{ |x| webpage(x).xpath("//div[@id='jobDescriptionText']//ul//text()").to_a }
     arr = arr.map{ |x| x.map { |y| y.to_s } }
     arr
   end
 
-  # Gives you the links of the first 10you need the number of the city
+  # Gives you the links of the first 5 jobs. You need the number of the city
   def first(city_num)
     result = []
     result = webpage(loc_link[city_num.to_i]).xpath("//div[@class='title']//a//attribute::href").to_a
+    result = result[0...5]
     result = result.map { |x| job_link(x.to_s) }
   end
 
@@ -102,14 +111,17 @@ class Scraper
   def yoe(city_number)
     arr = []
     arr[0] = webpage(loc_link[city_number]).xpath("//div[@class='title']//a//attribute::title")
+    arr[0] = arr[0][0...5]
     arr[1] = doc_of_job(city_number).map{ |x| x.select{ |x| x if x.include?('years') } }
     arr[1] = arr[1].map{ |x| x.empty? ? 'No information given' : x }
     arr
   end
 end
 
-#s1 = Scraper.new
-#
-#arr = s1.doc_of_job(0)
-#
-#puts arr[1]
+s1 = Scraper.new
+
+arr = []
+arr = s1.doc_of_job(0)
+
+puts s1.first(0)
+puts arr[1]
