@@ -2,22 +2,17 @@
 # frozen_string_literal: true
 
 require_relative '../lib/scraper.rb'
+require_relative '../lib/builder.rb'
 
+b1 = Builder.new
 s1 = Scraper.new
 
-arr = ['', '-------------', '']
+File.delete("test.html")
+file = File.new("test.html",'w')
+b1.lis(s1.table_creation('Salary Estimate', 1, s1.page_url),'sal')
+b1.lis(s1.table_creation('Job Type', 2, s1.page_url),'job')
+b1.lis(s1.table_creation('City', nil, s1.page_url),'loc')
+file.write(b1.to_html)
+file.close
 
-# puts s1.table_creation('Salary Estimate', 1, s1.page_url)
-# puts arr
-# puts s1.table_creation('Job Type', 2, s1.page_url)
-# puts arr
-# puts s1.table_creation('Location', nil, s1.page_url)
-
-(0...3).each do |i|
-  puts s1.city(s1.loc_link(i))
-  puts ''
-  puts s1.table_creation('Salary Estimate', 1, s1.loc_link(i))
-  puts arr
-  puts s1.table_creation('Job Type', 2, s1.loc_link(i))
-  puts ['', '******************', '']
-end
+puts `xdg-open test.html`
