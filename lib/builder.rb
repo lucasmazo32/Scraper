@@ -40,8 +40,8 @@ class Builder
 
   def jobs(job_name, years, hyper, city_num)
     (0...5).each do |i|
-      li = @doc.at_css "div[@class='#{city_num}-jobs col-6 d-flex justify-content-center']//ul//li#{[i * 2 + 1]}//a"
-      yoe = @doc.at_css "div[@class='#{city_num}-jobs col-6 d-flex justify-content-center']//ul//li#{[i * 2 + 2]}"
+      li = @doc.at_css "div[@class='#{city_num}-jobs col-12 d-flex justify-content-center']//ul//li#{[i * 2 + 1]}//a"
+      yoe = @doc.at_css "div[@class='#{city_num}-jobs col-12 d-flex justify-content-center']//ul//li#{[i * 2 + 2]}"
       li.content = job_name[i]
       yoe.content = years[i]
       li['href'] = hyper[i]
