@@ -52,9 +52,6 @@ This project gave me a deeper understanding of the concepts in ruby and it was g
 - CSS
 - VSCode
 
-## Live Demo
-You can check the live version here: **pending**
-
 ## Author
 
 👤 **Lucas Mazo**
