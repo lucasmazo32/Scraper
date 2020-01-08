@@ -28,15 +28,15 @@ describe Scraper do
     end
   end
 
-  describe '#first' do
+  describe '#first_links' do
     it 'gives you the link of the first 5 jobs' do
-      expect(scrap.first(0)[1].match?('https://www.indeed.com')).to be true
+      expect(scrap.first_links(0)[1].match?('https://www.indeed.com')).to be true
     end
   end
 
-  describe '#yoe' do
+  describe '#years_of_experience' do
     it 'gives you the years of experience and name of job per job in a 2d array' do
-      expect(scrap.yoe(0).length).to eql(2)
+      expect(scrap.years_of_experience(0).length).to eql(2)
     end
   end
 end

@@ -16,11 +16,9 @@ class Fast
   end
 
   def title
-    arr = []
-    arr[0] = @doc.xpath("//span[@id='what_container']//input//attribute::value").to_s.capitalize
-    arr[1] = ' jobs at '
-    arr[2] = @doc.xpath("//span[@id='where_container']//input//attribute::value").to_s.capitalize
-    arr.join
+    @doc.xpath("//span[@id='what_container']//input//attribute::value").to_s.capitalize +
+      ' jobs at ' +
+      @doc.xpath("//span[@id='where_container']//input//attribute::value").to_s.capitalize
   end
 
   def url_name

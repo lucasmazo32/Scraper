@@ -13,21 +13,23 @@ describe Builder do
     end
   end
 
-  describe '#hyper' do
+  describe '#hyperlink' do
     it 'modifies the hiperlink, should returns the href of the title I give' do
-      expect(buil.hyper('https://www.indeed.com', 'search-title')).to eql('https://www.indeed.com')
+      expect(buil.hyperlink('https://www.indeed.com', 'search-title')).to eql('https://www.indeed.com')
     end
   end
 
-  describe '#lis' do
+  describe '#job_data' do
     it 'modifies the Unorder list items, it should return (0...6)' do
-      expect(buil.lis([1, 2, 3, 4, 5, 6], 4, 'main', 'sal')).to eql(0...6)
+      expect(buil.job_data([1, 2, 3, 4, 5, 6], 4, 'main', 'sal')).to eql(0...6)
     end
   end
 
-  describe '#fast' do
+  describe '#fast_jobs' do
     it 'modifies the unorder list items for fast scrap, should return a message for the user to wait' do
-      expect(buil.fast([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).to eql('Give us a moment to load a more thorough scrap (and be patient, it can take up to 1 minute). Meanwhile, check these hot jobs!')
+      expect(buil.fast_jobs([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).to eql('Give us '\
+        'a moment to load a more thorough scrap (and be patient, it can take up to 1 minute).'\
+        ' Meanwhile, check these hot jobs!')
     end
   end
 
