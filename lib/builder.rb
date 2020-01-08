@@ -14,28 +14,30 @@ class Builder
     title.content = (num == 1 ? 'Basic Scrap' : 'Advanced Scrap')
   end
 
-  # Adds the hiperlink to the title. Needs the URL and the class name as inputs
-  def hyper(url, class_name)
+  # Adds the hyperlink to the title. Needs the URL and the class name as inputs
+  def hyperlink(url, class_name)
     hyper_a = @doc.at_css "div[@class='row title #{class_name}']//a"
     hyper_a['href'] = url
   end
 
   # Modifies the Un-ordered list with the content given (array), column of bootstrap and class name
-  def lis(cont, col, class_container, class_name)
+  def job_data(cont, col, class_container, class_name)
     (0...6).each do |i|
-      li = @doc.at_css "div[@class='row #{class_container}']//div[@class='#{class_name} col-#{col} d-flex justify-content-center']//ul//li#{[i + 1]}"
+      li = @doc.at_css "div[@class='row #{class_container}']//"\
+      "div[@class='#{class_name} col-#{col} d-flex justify-content-center']//ul//li#{[i + 1]}"
       li.content = cont[i]
     end
   end
 
-  def fast(cont, hyper)
+  def fast_jobs(cont, hyper)
     (0...10).each do |i|
       li = @doc.at_css "div[@class='row fast justify-content-center']//ul//li#{[i + 1]}//a"
       li.content = cont[i]
       li['href'] = hyper[i]
     end
     div = @doc.at_css "div[@class='row title city1-title']"
-    div.content = 'Give us a moment to load a more thorough scrap (and be patient, it can take up to 1 minute). Meanwhile, check these hot jobs!'
+    div.content = 'Give us a moment to load a more thorough scrap '\
+    '(and be patient, it can take up to 1 minute). Meanwhile, check these hot jobs!'
   end
 
   def jobs(job_name, years, hyper, city_num)
