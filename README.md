@@ -2,7 +2,7 @@
 
 ## Instructions
 
-- Before running the program, make sure to install the dependencies!
+- Before running the program, make sure to install the dependencies (run "bundle install" in your terminal)!
 
 - To run this file you have to open a terminal to the main folder and type "bin/main.rb" without quotation marks.
 
@@ -46,11 +46,13 @@ This project gave me a deeper understanding of the concepts in ruby and it was g
 
 ## Built With
 
-- Ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-linux]
+- Ruby 2.6.5
 - Gems: Nokogiri
 - HTML
 - CSS
 - VSCode
+
+- If you want to change the code, you can type "bundle update --ruby" in your terminal to use the version of Ruby I used to make this project. You can check that the update work by running "bundle platform --ruby" on your terminal.
 
 ## Author
 
