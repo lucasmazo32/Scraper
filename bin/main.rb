@@ -6,7 +6,19 @@ require_relative '../lib/builder.rb'
 require_relative '../lib/fast_scraper.rb'
 require 'os'
 
-def verification(condition)
+def detect_os(file_name)
+    if OS.linux?
+        puts `xdg-open ./html/#{file_name}.html`
+    elsif OS.mac?
+        puts `open ./html/#{file_name}.html`
+    elsif OS.windows?
+        puts `cd ./html/#{file_name}.html`
+    else
+        return "I don't know what OS you are using"
+    end
+end
+
+def verification(condition, link)
     while condition
         puts `clear`
         puts 'Oops, it seems you enter a WRONG link.'
@@ -17,6 +29,31 @@ def verification(condition)
     link
 end
 
+def scraper_init(link)
+    scraper_arr = []
+    if link.nil? || link.empty? || (/\S/).match(link).nil?
+        scraper_arr[0] = Fast.new
+        scraper_arr[1] = Scraper.new
+    else
+        scraper_arr[0] = Fast.new(link)
+        scraper_arr[1] = Scraper.new(link)
+    end
+    scraper_arr
+end
+
+def default_init?(link)
+    scraper_arr = []
+    if link.nil? || link.empty? || (/\S/).match(link).nil?
+        scraper_arr[0] = Fast.new
+        scraper_arr[1] = Scraper.new
+    else
+        ver = !link.match?('https://www.indeed.com/')
+        link = verification(ver, link)
+        return scraper_info = scraper_init(link)
+    end
+    scraper_arr
+end
+
 # Code for user interaction
 puts `clear`
 puts 'Welcome to the job scraper from indeed. If you want to add a custom link paste it on the chat, otherwise just press enter.'
@@ -24,20 +61,10 @@ puts 'Remember that the link SHOULD start with https://www.indeed.com'
 
 link = gets.chomp
 
-if link.nil? || link.empty? || (/\S/).match(link).nil?
-    fast_scraper = Fast.new
-    complete_scraper = Scraper.new
-else
-    ver = link.match('https://www.indeed.com/').nil?
-    link = verification(ver)
-    if link.nil? || link.empty? || (/\S/).match(link).nil?
-        fast_scraper = Fast.new
-        complete_scraper = Scraper.new
-    else
-        fast_scraper = Fast.new(link)
-        complete_scraper = Scraper.new(link)
-    end
-end
+scraper_initialized = default_init?(link)
+
+fast_scraper = scraper_initialized[0]
+complete_scraper = scraper_initialized[1]
 
 # Code to make the GUI
 
@@ -56,7 +83,7 @@ builder_fast.fast_jobs(job_fast[0], job_fast[1])
 file.write(builder_fast.trans_html)
 file.close
 
-puts `xdg-open ./html/fast.html`
+detect_os('fast')
 
 builder_complete = Builder.new
 
@@ -107,4 +134,4 @@ builder_complete.jobs(years_of_experience3[0], years_of_experience3[1], jobs_lin
 file.write(builder_complete.trans_html)
 file.close
 
-puts `xdg-open ./html/complete.html`
+detect_os('complete')

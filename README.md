@@ -2,11 +2,13 @@
 
 ## Instructions
 
+- Before running the program, make sure to install the dependencies!
+
 - To run this file you have to open a terminal to the main folder and type "bin/main.rb" without quotation marks.
 
 - Afterwards, the program is going to ask you if you want to submit a file from a webpage or run the default.
 
-- If you decide to continue with the default page, just press enter and enjoy.
+- If you decide to continue with the default page (Back End Developer jobs at U.S.), just press enter and enjoy.
 
 - If you decide to enter a webpage, I encourage you to visit [indeed](https://www.indeed.com/jobs?q=full+stack+developer&l=United+States) and search for what you want, copy the link (all of it!) and paste it in the terminal. 
 
@@ -17,6 +19,14 @@
 - BOTH files will automatically load. Therefore there is no need to go back to the code once the first page is loaded.
 
 # About the file
+
+## What should you expect when running the program
+
+You will get the information of:
+
+- Ten jobs in the fast scraper page with their respective hyperlink.
+- The information of estimated salary, type of contract and most important cities for employment in the U.S.
+- The report of estimated wage, type of contract, five jobs with years of experience (if given) and their respective hyperlink for the three most important cities in the U.S. for the given position.
 
 ## Why Indeed?
 
@@ -36,7 +46,7 @@ This project gave me a deeper understanding of the concepts in ruby and it was g
 
 ## Built With
 
-- Ruby
+- Ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-linux]
 - Gems: Nokogiri
 - HTML
 - CSS
